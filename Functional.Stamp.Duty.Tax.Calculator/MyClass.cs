@@ -12,19 +12,21 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			_value = value;
 		}
 
-		private double CalculateTax(int lowerBand, int upperBand, double percentage)
+		private double CalculateTax(int lowerBand, int rangeOfBand, double percentage)
 		{
-			if (_value > lowerBand) {
-				return (Math.Min (upperBand, _value) - lowerBand) * percentage;
-			}
-			return 0;
+			return AmountInBand (lowerBand, rangeOfBand) * percentage;
+		}
+
+		int AmountInBand (int lowerBand, int rangeOfBand)
+		{
+			return Math.Min (rangeOfBand, Math.Max (0, _value - lowerBand));
 		}
 
 		public double Calculate ()
 		{
 			var tax = 0.0;
-			tax += CalculateTax (250000, 925000, 0.05);
-			tax += CalculateTax (125000, 250000, 0.02);
+			tax += CalculateTax (250000, 675000, 0.05);
+			tax += CalculateTax (125000, 125000, 0.02);
 			return tax;
 		}
 	}
