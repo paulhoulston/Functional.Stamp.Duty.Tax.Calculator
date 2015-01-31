@@ -5,19 +5,19 @@ using System.Collections.Generic;
 
 namespace Functional.Stamp.Duty.Tax.Calculator
 {
-	public class TaxCalculator
+	public class House
 	{
-		private readonly int _value;
-		private readonly List<TaxBand> _taxBands = new List<TaxBand> {
+		private readonly int _housePrice;
+		private readonly List<TaxBand> stampDutyBands = new List<TaxBand> {
 			new TaxBand (1500000, int.MaxValue, 0.12),
 			new TaxBand (925000, 575000, 0.10),
 			new TaxBand (250000, 675000, 0.05),
 			new TaxBand (125000, 125000, 0.02)
 		};
 
-		public TaxCalculator (int value)
+		public House (int housePrice)
 		{
-			_value = value;
+			_housePrice = housePrice;
 		}
 
 		private class TaxBand
@@ -34,19 +34,19 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			}
 		}
 
-		private double CalculateTax(TaxBand taxBand)
+		private double CalculateTaxInBand(TaxBand taxBand)
 		{
-			return AmountInBand (taxBand.LowerBand, taxBand.RangeOfBand) * taxBand.Percentage;
+			return MonetaryAmountInBand (taxBand.LowerBand, taxBand.RangeOfBand) * taxBand.Percentage;
 		}
 
-		private int AmountInBand (int lowerBand, int rangeOfBand)
+		private int MonetaryAmountInBand (int lowerBand, int rangeOfBand)
 		{
-			return Math.Min (rangeOfBand, Math.Max (0, _value - lowerBand));
+			return Math.Min (rangeOfBand, Math.Max (0, _housePrice - lowerBand));
 		}
 
-		public double Calculate ()
+		public double StampDuty ()
 		{
-			return _taxBands.Sum(taxBand => CalculateTax(taxBand));
+			return stampDutyBands.Sum(taxBand => CalculateTaxInBand(taxBand));
 		}
 	}
 
@@ -59,8 +59,8 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			[TestCase(125000)]
 			public void then_I_dont_pay_any_stamp_duty(int housePrice)
 			{
-				var taxCalculator = new TaxCalculator (housePrice);
-				Assert.AreEqual(0, taxCalculator.Calculate());
+				var taxCalculator = new House (housePrice);
+				Assert.AreEqual(0, taxCalculator.StampDuty());
 			}
 		}
 
@@ -69,8 +69,8 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			[Test]
 			public void then_I_only_pay_stamp_duty_on_the_amount_within_that_tax_bracket()
 			{
-				var taxCalculator = new TaxCalculator (250000);
-				Assert.AreEqual(2500, taxCalculator.Calculate());
+				var taxCalculator = new House (250000);
+				Assert.AreEqual(2500, taxCalculator.StampDuty());
 			}
 		}
 
@@ -79,8 +79,8 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			[Test]
 			public void then_I_pay_the_5_percent_of_the_third_band_and_2_percent_of_the_second_band()
 			{
-				var taxCalculator = new TaxCalculator (925000);
-				Assert.AreEqual(36250, taxCalculator.Calculate());
+				var taxCalculator = new House (925000);
+				Assert.AreEqual(36250, taxCalculator.StampDuty());
 			}
 		}
 
@@ -89,8 +89,8 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			[Test]
 			public void then_I_pay_the_appropriate_percentages_for_each_band()
 			{
-				var taxCalculator = new TaxCalculator (1500000);
-				Assert.AreEqual(93750, taxCalculator.Calculate());
+				var taxCalculator = new House (1500000);
+				Assert.AreEqual(93750, taxCalculator.StampDuty());
 			}
 		}
 
@@ -99,8 +99,8 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			[Test]
 			public void then_I_pay_the_appropriate_percentages_for_each_band_with_no_maximum_over_150000_pounds()
 			{
-				var taxCalculator = new TaxCalculator (5000000);
-				Assert.AreEqual(513750, taxCalculator.Calculate());
+				var taxCalculator = new House (5000000);
+				Assert.AreEqual(513750, taxCalculator.StampDuty());
 			}
 		}
 	}
