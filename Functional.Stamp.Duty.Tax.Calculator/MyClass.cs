@@ -1,11 +1,19 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Functional.Stamp.Duty.Tax.Calculator
 {
 	public class TaxCalculator
 	{
 		private readonly int _value;
+		private readonly List<Func<double>> _taxCalculations = new List<Func<double>> {
+			() => CalculateTax (125000, 125000, 0.02),
+			() => CalculateTax (1500000, int.MaxValue, 0.12),
+			() => CalculateTax (925000, 575000, 0.10),
+			() => CalculateTax (250000, 675000, 0.05)
+		};
 
 		public TaxCalculator (int value)
 		{
@@ -17,19 +25,14 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			return AmountInBand (lowerBand, rangeOfBand) * percentage;
 		}
 
-		int AmountInBand (int lowerBand, int rangeOfBand)
+		private int AmountInBand (int lowerBand, int rangeOfBand)
 		{
 			return Math.Min (rangeOfBand, Math.Max (0, _value - lowerBand));
 		}
 
 		public double Calculate ()
 		{
-			var tax = 0.0;
-			tax += CalculateTax (1500000, int.MaxValue, 0.12);
-			tax += CalculateTax (925000, 575000, 0.10);
-			tax += CalculateTax (250000, 675000, 0.05);
-			tax += CalculateTax (125000, 125000, 0.02);
-			return tax;
+			return _taxCalculations.Sum (calc => calc ());
 		}
 	}
 
@@ -87,6 +90,4 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			}
 		}
 	}
-
 }
-
