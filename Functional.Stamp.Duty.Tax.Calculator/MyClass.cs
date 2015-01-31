@@ -50,7 +50,7 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			[Test]
 			public void then_I_pay_the_5_percent_of_the_third_band_and_2_percent_of_the_second_band()
 			{
-				var taxCalculator = new TaxCalculator (875000);
+				var taxCalculator = new TaxCalculator (925000);
 				Assert.AreEqual(36250, taxCalculator.Calculate());
 			}
 		}
