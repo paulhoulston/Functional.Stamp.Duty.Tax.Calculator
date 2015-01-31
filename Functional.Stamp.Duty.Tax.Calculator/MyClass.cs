@@ -25,6 +25,7 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 		public double Calculate ()
 		{
 			var tax = 0.0;
+			tax += CalculateTax (1500000, int.MaxValue, 0.12);
 			tax += CalculateTax (925000, 575000, 0.10);
 			tax += CalculateTax (250000, 675000, 0.05);
 			tax += CalculateTax (125000, 125000, 0.02);
