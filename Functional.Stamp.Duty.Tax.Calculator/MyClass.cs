@@ -64,6 +64,16 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 				Assert.AreEqual(36250, taxCalculator.Calculate());
 			}
 		}
+
+		public class when_the_purchase_price_is_within_the_fourth_stamp_duty_tax_bracket
+		{
+			[Test]
+			public void then_I_pay_the_appropriate_percentages_for_each_band()
+			{
+				var taxCalculator = new TaxCalculator (1500000);
+				Assert.AreEqual(93750, taxCalculator.Calculate());
+			}
+		}
 	}
 
 }
