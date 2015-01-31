@@ -75,6 +75,16 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 				Assert.AreEqual(93750, taxCalculator.Calculate());
 			}
 		}
+
+		public class when_the_purchase_price_is_within_the_fifth_stamp_duty_tax_bracket
+		{
+			[Test]
+			public void then_I_pay_the_appropriate_percentages_for_each_band_with_no_maximum_over_150000_pounds()
+			{
+				var taxCalculator = new TaxCalculator (5000000);
+				Assert.AreEqual(513750, taxCalculator.Calculate());
+			}
+		}
 	}
 
 }
