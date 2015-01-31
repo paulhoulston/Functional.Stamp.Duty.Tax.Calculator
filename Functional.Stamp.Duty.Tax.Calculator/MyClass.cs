@@ -12,8 +12,10 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			_value = value;
 		}
 
-		public int Calculate ()
+		public double Calculate ()
 		{
+			if (_value > 125000)
+				return (_value - 125000) * .02;
 			return 0;
 		}
 	}
