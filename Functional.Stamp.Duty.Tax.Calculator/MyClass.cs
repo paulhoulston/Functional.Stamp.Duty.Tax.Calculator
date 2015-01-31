@@ -8,16 +8,36 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 	public class TaxCalculator
 	{
 		private readonly int _value;
-		private readonly List<Func<double>> _taxCalculations = new List<Func<double>> {
-			() => CalculateTax (125000, 125000, 0.02),
-			() => CalculateTax (1500000, int.MaxValue, 0.12),
-			() => CalculateTax (925000, 575000, 0.10),
-			() => CalculateTax (250000, 675000, 0.05)
-		};
+		private readonly List<Func<double>> _taxCalculations;
 
 		public TaxCalculator (int value)
 		{
 			_value = value;
+			_taxCalculations = new List<Func<double>> {
+				() => CalculateTax (125000, 125000, 0.02),
+				() => CalculateTax (1500000, int.MaxValue, 0.12),
+				() => CalculateTax (925000, 575000, 0.10),
+				() => CalculateTax (250000, 675000, 0.05)
+			};
+		}
+
+		private class TaxBand
+		{
+			public readonly int LowerBand;
+			public readonly int RangeOfBand;
+			public readonly double Percentage;
+
+			public TaxBand(int lowerBand, int rangeOfBand, double percentage)
+			{
+				LowerBand=lowerBand;
+				RangeOfBand=rangeOfBand;
+				Percentage=percentage;
+			}
+		}
+
+		private double CalculateTax(TaxBand taxBand)
+		{
+			return CalculateTax (taxBand.LowerBand, taxBand.RangeOfBand, taxBand.Percentage);
 		}
 
 		private double CalculateTax(int lowerBand, int rangeOfBand, double percentage)
