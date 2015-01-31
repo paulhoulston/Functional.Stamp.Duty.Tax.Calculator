@@ -37,12 +37,7 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 
 		private double CalculateTax(TaxBand taxBand)
 		{
-			return CalculateTax (taxBand.LowerBand, taxBand.RangeOfBand, taxBand.Percentage);
-		}
-
-		private double CalculateTax(int lowerBand, int rangeOfBand, double percentage)
-		{
-			return AmountInBand (lowerBand, rangeOfBand) * percentage;
+			return AmountInBand (taxBand.LowerBand, taxBand.RangeOfBand) * taxBand.Percentage;
 		}
 
 		private int AmountInBand (int lowerBand, int rangeOfBand)
