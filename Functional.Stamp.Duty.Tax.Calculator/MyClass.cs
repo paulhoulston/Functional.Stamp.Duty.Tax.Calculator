@@ -14,6 +14,7 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 
 		public double Calculate ()
 		{
+
 			if (_value > 125000)
 				return (_value - 125000) * .02;
 			return 0;
@@ -41,6 +42,16 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 			{
 				var taxCalculator = new TaxCalculator (250000);
 				Assert.AreEqual(2500, taxCalculator.Calculate());
+			}
+		}
+
+		public class when_the_purchase_price_is_within_the_third_stamp_duty_tax_bracket
+		{
+			[Test]
+			public void then_I_pay_the_5_percent_of_the_third_band_and_2_percent_of_the_second_band()
+			{
+				var taxCalculator = new TaxCalculator (875000);
+				Assert.AreEqual(36250, taxCalculator.Calculate());
 			}
 		}
 	}
