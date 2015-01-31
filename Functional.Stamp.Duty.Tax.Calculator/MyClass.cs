@@ -14,10 +14,10 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 		{
 			_value = value;
 			_taxCalculations = new List<Func<double>> {
-				() => CalculateTax (125000, 125000, 0.02),
-				() => CalculateTax (1500000, int.MaxValue, 0.12),
-				() => CalculateTax (925000, 575000, 0.10),
-				() => CalculateTax (250000, 675000, 0.05)
+				() => CalculateTax (new TaxBand (1500000, int.MaxValue, 0.12)),
+				() => CalculateTax (new TaxBand (925000, 575000, 0.10)),
+				() => CalculateTax (new TaxBand (250000, 675000, 0.05)),
+				() => CalculateTax (new TaxBand (125000, 125000, 0.02))
 			};
 		}
 
