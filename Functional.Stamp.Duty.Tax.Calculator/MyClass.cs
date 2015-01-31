@@ -4,9 +4,9 @@ using NUnit.Framework;
 namespace Functional.Stamp.Duty.Tax.Calculator
 {
 	[TestFixture]
-	public class given_I_am_in_the_first_stamp_duty_tax_band
+	public class given_I_am_buying_a_house
 	{
-		public class when_I_pay_nothing_for_a_house
+		public class when_the_purchase_price_is_within_the_first_stamp_duty_tax_bracket
 		{
 			public class TaxCalculator
 			{
@@ -23,23 +23,13 @@ namespace Functional.Stamp.Duty.Tax.Calculator
 				}
 			}
 
-			[Test]
-			public void then_I_dont_pay_any_stamp_duty()
+			[TestCase(0)]
+			[TestCase(125000)]
+			public void then_I_dont_pay_any_stamp_duty(int housePrice)
 			{
-				var taxCalculator = new TaxCalculator (0);
+				var taxCalculator = new TaxCalculator (housePrice);
 				Assert.AreEqual(0, taxCalculator.Calculate());
 			}
-
-			public class when_I_pay_one_pound_less_than_the_next_stamp_duty_tax_band
-			{
-				[Test]
-				public void then_I_dont_pay_any_stamp_duty()
-				{
-					var taxCalculator = new TaxCalculator (125000);
-					Assert.AreEqual(0, taxCalculator.Calculate());
-				}				
-			}
-
 		}
 	}
 
